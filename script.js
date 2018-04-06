@@ -1,15 +1,11 @@
 /*
   This web application helps a user calculate a GPA for their courses.
-
   User enters a name and grade for each course via a form. We build a list of these courses,
   and print the list to the page every time list changes (on form submit).
-
   When user clicks the "calculate" button, we get the average of the grades for each
   course in the list, and print it to the page.
-
   When user clicks "clear" button, the list of courses is emptied.
   The page is updated to remove the old list and any previously calculated GPA.
-
   Comments labeled TODO and BUGFIX must be done for the application to work properly.
   REVIEW comments are requests for you to use your judgement to optimize the code.
 */
@@ -34,13 +30,13 @@ window.onload = function(){
 // clears content in form fields, prints courseList objects to the page.
 // BUGFIX: This function isn't working properly- nothing gets output to the list on form submit
 function addACourse(){
+  event.preventDefault() /* must be present!!! */
   var grade = parseFloat(this.elements["grade"].value);
+  console.log("grade: ", grade) // This was missing
   /*
     TODO: validate that "grade" value is a number between 1.0 and 4.0, stop processing if it is not.
-
     Checking 'grade typeof "number"' will always return true because we called parseFloat.
     We must instead check that it's value is not NaN.
-
     REVIEW: could we make it doubly safe by adding an HTML validation as well?
   */
 
@@ -51,7 +47,7 @@ function addACourse(){
   }
 
   courseList.push(newCourse)
-
+  console.log("courselist: ", courseList) // This was missing
   clearFormFields()
   outputList()
 }
@@ -89,6 +85,19 @@ function clearData(){
 // Prints courseList objects to the page in a readable way.
 function outputList(){
   var list = document.getElementById("course-list");
+  list.innerHTML = ""
+  
+  for(var i=0; i< courseList.length; i++){
+    console.log("name: ", courseList[i].name, "grade: ", courseList[i].grade)
+  
+  var newLi = document.createElement("li")
+  newLi.innerHTML = "name: " + courseList[i].name + "grade: " + courseList[i].grade
+  
+  list.appendChild(newLi)
+  
+  }
+  
+  
   /*
     TODO: Clear the existing contents of the "list" element. Then, for each object in courseList,
     create an li element that holds the course's name and grade, and append
